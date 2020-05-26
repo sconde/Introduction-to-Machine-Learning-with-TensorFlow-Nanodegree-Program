@@ -71,7 +71,8 @@ def main():
     #pdb.set_trace()
     with tf.device('/cpu:0'):
         #reloaded_model = tf.keras.models.load_model(based_model_path)
-        loaded_model = tf.keras.models.load(based_model_path, clear_devices=True)
+        loaded_model = tf.keras.models.load_model(based_model_path,
+                                            custom_objects={'KerasLayer':hub.KerasLayer})
         if args_parsed.verbose: print(loaded_model.classifier)
 
         
@@ -82,9 +83,9 @@ def main():
             args['top_k']
         )
     
-    print(f"Likelihood: {likelyhood}")
-    print(f"Classes: {classes}")
-    print(f"Labled-Classes: {[category_names[cls] for cls in top_k_ind[0]]}")
+    print(f"Labled-Classes: {[category_names[str(cls+1)] for cls in top_k_ind[0]]}")
+    print(f"Likelihood: {top_k_val[0]}")
+    print(f"Classes: {top_k_ind[0]}")
     
 
 
